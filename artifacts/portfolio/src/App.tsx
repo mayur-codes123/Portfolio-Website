@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import { 
   ArrowRight, 
   Code2, 
@@ -21,6 +21,29 @@ import {
   Hotel
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const PageReveal = () => (
+  <AnimatePresence>
+    <motion.div
+      key="page-reveal"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+      style={{ pointerEvents: "none" }}
+      className="fixed inset-0 z-[999] bg-background"
+    />
+  </AnimatePresence>
+);
+
+const TopBar = () => (
+  <motion.div
+    initial={{ scaleX: 0 }}
+    animate={{ scaleX: 1 }}
+    transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+    style={{ originX: 0 }}
+    className="fixed top-0 left-0 right-0 h-[2px] bg-primary z-[1000]"
+  />
+);
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -123,6 +146,8 @@ const Nav = () => {
   );
 };
 
+const heroWords = ["I", "build", "business", "websites", "that", "convert."];
+
 const Hero = () => {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 80]);
@@ -134,39 +159,56 @@ const Hero = () => {
         style={{ y, opacity }}
         className="absolute inset-0 -z-10 pointer-events-none"
       >
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[130px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-primary/8 blur-[130px]" />
+        <motion.div
+          initial={{ scale: 0.7, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[130px]"
+        />
+        <motion.div
+          initial={{ scale: 0.7, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+          className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-primary/8 blur-[130px]"
+        />
       </motion.div>
 
       <div className="max-w-5xl">
         <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, letterSpacing: "0.3em", y: 10 }}
+          animate={{ opacity: 1, letterSpacing: "0.15em", y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="text-sm md:text-base font-semibold tracking-widest text-muted-foreground uppercase mb-6"
-         
         >
           Freelance Web Designer & Developer
         </motion.h2>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.05]"
-         
-        >
-          I build <span className="text-muted-foreground/60">business</span>{" "}
-          websites that{" "}
-          <span className="italic font-serif text-foreground">convert</span>.
-        </motion.h1>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.05]">
+          {heroWords.map((word, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{
+                duration: 0.65,
+                delay: 0.6 + i * 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className={`inline-block mr-[0.25em] ${
+                word === "business" ? "text-muted-foreground/60" :
+                word === "convert." ? "italic font-serif" : ""
+              }`}
+            >
+              {word}
+            </motion.span>
+          ))}
+        </h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.7, delay: 1.15, ease: [0.16, 1, 0.3, 1] }}
           className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
-         
         >
           Hi, I'm{" "}
           <span className="text-foreground font-semibold">Mayur Tak</span>. I
@@ -177,14 +219,13 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, delay: 1.3, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row gap-4"
         >
           <Button
             size="lg"
             className="rounded-full px-8 h-14 text-base group"
             onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}
-           
           >
             View My Work
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
@@ -194,7 +235,6 @@ const Hero = () => {
             variant="outline"
             className="rounded-full px-8 h-14 text-base hover:bg-foreground hover:text-background transition-colors duration-300"
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-           
           >
             Get in Touch
           </Button>
@@ -204,10 +244,14 @@ const Hero = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
+        transition={{ duration: 1, delay: 1.8 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <div className="w-px h-12 bg-gradient-to-b from-transparent to-muted-foreground/40" />
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-px h-12 bg-gradient-to-b from-transparent to-muted-foreground/40"
+        />
       </motion.div>
     </section>
   );
@@ -724,6 +768,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground">
+      <PageReveal />
+      <TopBar />
       <Nav />
       <Hero />
       <About />
