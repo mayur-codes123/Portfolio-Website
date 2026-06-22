@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, 
   Code2, 
@@ -23,16 +23,13 @@ import {
 import { Button } from "@/components/ui/button";
 
 const PageReveal = () => (
-  <AnimatePresence>
-    <motion.div
-      key="page-reveal"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
-      style={{ pointerEvents: "none" }}
-      className="fixed inset-0 z-[999] bg-background"
-    />
-  </AnimatePresence>
+  <motion.div
+    initial={{ opacity: 1 }}
+    animate={{ opacity: 0 }}
+    transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
+    style={{ pointerEvents: "none", willChange: "opacity" }}
+    className="fixed inset-0 z-[999] bg-background"
+  />
 );
 
 const TopBar = () => (
@@ -74,8 +71,8 @@ const Nav = () => {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10" : "bg-transparent"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? "bg-background/95 border-b border-border/40" : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 h-16 flex items-center justify-between">
@@ -155,114 +152,100 @@ const heroWords = [
   { text: "convert.", cls: "italic font-serif" },
 ];
 
-const Hero = () => {
-  const { scrollY } = useScroll();
-  const bgY = useTransform(scrollY, [0, 500], [0, 80]);
-  const bgOpacity = useTransform(scrollY, [0, 400], [1, 0]);
+const ease = [0.16, 1, 0.3, 1] as const;
 
-  return (
-    <section className="min-h-[100dvh] flex flex-col justify-center relative px-6 md:px-12 lg:px-24 pt-20 overflow-hidden">
-      <motion.div
-        style={{ y: bgY, opacity: bgOpacity }}
-        className="absolute inset-0 -z-10 pointer-events-none"
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.6, ease: "easeOut", delay: 0.3 }}
-          className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[130px]"
-        />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.6, ease: "easeOut", delay: 0.6 }}
-          className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-primary/8 blur-[130px]"
-        />
-      </motion.div>
-
-      <div className="max-w-5xl">
-        <div style={{ overflow: "hidden" }}>
-          <motion.h2
-            initial={{ y: "110%", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.65, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="text-sm md:text-base font-semibold tracking-widest text-muted-foreground uppercase mb-6"
-          >
-            Freelance Web Designer & Developer
-          </motion.h2>
-        </div>
-
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1]">
-          {heroWords.map((word, i) => (
-            <span
-              key={i}
-              style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", marginRight: "0.22em" }}
-            >
-              <motion.span
-                initial={{ y: "105%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.7, delay: 0.5 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-                style={{ display: "inline-block" }}
-                className={word.cls}
-              >
-                {word.text}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
+const Hero = () => (
+  <section
+    className="min-h-[100dvh] flex flex-col justify-center relative px-6 md:px-12 lg:px-24 pt-20 overflow-hidden"
+    style={{
+      background:
+        "radial-gradient(ellipse 70% 60% at 10% 40%, hsl(var(--primary) / 0.07) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 90% 70%, hsl(var(--primary) / 0.05) 0%, transparent 70%)",
+    }}
+  >
+    <div className="max-w-5xl">
+      <div style={{ overflow: "hidden" }}>
+        <motion.h2
+          initial={{ y: "110%" }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3, ease }}
+          className="text-sm md:text-base font-semibold tracking-widest text-muted-foreground uppercase mb-6"
         >
-          Hi, I'm{" "}
-          <span className="text-foreground font-semibold">Mayur Tak</span>. I
-          craft polished, high-performance digital experiences that help
-          businesses stand out and grow. Design-forward, technically sharp.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-4"
-        >
-          <Button
-            size="lg"
-            className="rounded-full px-8 h-14 text-base group"
-            onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}
-          >
-            View My Work
-            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="rounded-full px-8 h-14 text-base hover:bg-foreground hover:text-background transition-colors duration-300"
-            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-          >
-            Get in Touch
-          </Button>
-        </motion.div>
+          Freelance Web Designer & Developer
+        </motion.h2>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.7 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+      <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1]">
+        {heroWords.map((word, i) => (
+          <span
+            key={i}
+            style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", marginRight: "0.22em" }}
+          >
+            <motion.span
+              initial={{ y: "105%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.65, delay: 0.42 + i * 0.07, ease }}
+              style={{ display: "inline-block", willChange: "transform" }}
+              className={word.cls}
+            >
+              {word.text}
+            </motion.span>
+          </span>
+        ))}
+      </h1>
+
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.65, delay: 0.95, ease }}
+        style={{ willChange: "transform, opacity" }}
+        className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
       >
-        <motion.div
-          animate={{ y: [0, 7, 0] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 0.3 }}
-          className="w-px h-12 bg-gradient-to-b from-transparent to-muted-foreground/40"
-        />
+        Hi, I'm{" "}
+        <span className="text-foreground font-semibold">Mayur Tak</span>. I
+        craft polished, high-performance digital experiences that help
+        businesses stand out and grow. Design-forward, technically sharp.
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.1, ease }}
+        style={{ willChange: "transform, opacity" }}
+        className="flex flex-col sm:flex-row gap-4"
+      >
+        <Button
+          size="lg"
+          className="rounded-full px-8 h-14 text-base group"
+          onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          View My Work
+          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          className="rounded-full px-8 h-14 text-base hover:bg-foreground hover:text-background transition-colors duration-300"
+          onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          Get in Touch
+        </Button>
       </motion.div>
-    </section>
-  );
-};
+    </div>
+
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6, delay: 1.6 }}
+      className="absolute bottom-10 left-1/2 -translate-x-1/2"
+    >
+      <motion.div
+        animate={{ y: [0, 7, 0] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 0.4 }}
+        className="w-px h-12 bg-gradient-to-b from-transparent to-muted-foreground/40"
+      />
+    </motion.div>
+  </section>
+);
 
 const About = () => {
   return (
