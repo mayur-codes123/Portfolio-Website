@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "1e6clIYaOXS1hPfe_nw7_"
+uri = "file://artifacts/portfolio/public/projects/restaurant.png"
+type = "image"
+title = "Restaurant Website Mockup"
+
+[[generated]]
+id = "dPiZtHAU3gww8EeyF6Op1"
+uri = "file://artifacts/portfolio/public/projects/real-estate.png"
+type = "image"
+title = "Real Estate Website Mockup"
+
+[[generated]]
+id = "H6Zm68HMv-qcad5E_to7n"
+uri = "file://artifacts/portfolio/public/projects/salon.png"
+type = "image"
+title = "Salon Website Mockup"
+
+[[generated]]
+id = "XdDnL_S2DRo7RhsUtwdpJ"
+uri = "file://artifacts/portfolio/public/projects/textile.png"
+type = "image"
+title = "Textile Manufacturing Website Mockup"
