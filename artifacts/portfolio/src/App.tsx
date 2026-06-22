@@ -412,10 +412,39 @@ const Industries = () => {
   );
 };
 
+const examples = [
+  {
+    title: "Fine Dining Restaurant",
+    category: "Hospitality",
+    image: "/projects/restaurant.png",
+    desc: "Elegant menus, ambiance storytelling, and reservation-ready layouts.",
+  },
+  {
+    title: "Luxury Real Estate",
+    category: "Real Estate",
+    image: "/projects/real-estate.png",
+    desc: "Property showcase, agent profiles, and high-end listing pages.",
+  },
+  {
+    title: "Beauty & Wellness Salon",
+    category: "Salon & Spa",
+    image: "/projects/salon.png",
+    desc: "Appointment booking flows, service menus, and brand-forward design.",
+  },
+  {
+    title: "Steel & Industrial Business",
+    category: "Manufacturing",
+    image: "/projects/textile.png",
+    desc: "Product catalogues, inquiry forms, and authority-building design for heavy industry.",
+  },
+];
+
 const Work = () => {
   return (
     <section id="work" className="py-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto">
+
+        {/* Featured real project */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -437,8 +466,8 @@ const Work = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-          className="group"
-          data-testid="project-card-0"
+          className="group mb-28"
+          data-testid="project-card-featured"
         >
           <div className="overflow-hidden rounded-2xl border border-border/50 bg-muted/20 aspect-[16/9] relative mb-8">
             <motion.img
@@ -451,11 +480,10 @@ const Work = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
           </div>
-
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <span className="inline-block px-3 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full mb-4 tracking-wide">
-                Featured Project
+                Live Project
               </span>
               <h3 className="text-2xl md:text-4xl font-bold mb-2">Sartaneshwar Textiles</h3>
               <p className="text-muted-foreground">Textile Manufacturing — Full business website</p>
@@ -467,7 +495,7 @@ const Work = () => {
               className="inline-flex items-center shrink-0 text-sm font-semibold uppercase tracking-wider hover:text-muted-foreground transition-colors group/link"
               whileHover={{ x: 4 }}
               transition={{ duration: 0.2 }}
-              data-testid="link-project-0"
+              data-testid="link-project-featured"
             >
               View Live Site{" "}
               <ExternalLink className="ml-2 w-4 h-4 group-hover/link:rotate-6 transition-transform duration-200" />
@@ -475,24 +503,67 @@ const Work = () => {
           </div>
         </motion.div>
 
+        {/* Example capabilities */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
+          <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">What I can build for you</h3>
+          <p className="text-muted-foreground">Here are examples of the types of websites I deliver across industries.</p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {examples.map((ex, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/40 transition-colors duration-300"
+              data-testid={`example-card-${i}`}
+            >
+              <div className="aspect-[4/3] overflow-hidden bg-muted/20">
+                <motion.img
+                  src={ex.image}
+                  alt={ex.title}
+                  className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-300"
+                  loading="lazy"
+                  whileHover={{ scale: 1.06 }}
+                  transition={{ duration: 0.5 }}
+                />
+              </div>
+              <div className="p-5">
+                <span className="text-xs font-semibold tracking-wider uppercase text-muted-foreground mb-2 block">{ex.category}</span>
+                <h4 className="font-bold mb-2 text-sm">{ex.title}</h4>
+                <p className="text-xs text-muted-foreground leading-relaxed">{ex.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-20 bg-card border border-border/50 rounded-2xl px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6"
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-12 bg-card border border-border/50 rounded-2xl px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6"
         >
           <div>
-            <h3 className="text-xl font-bold mb-1">Currently taking on new projects</h3>
-            <p className="text-muted-foreground">Let's build your business website from the ground up.</p>
+            <h3 className="text-xl font-bold mb-1">Ready to build yours?</h3>
+            <p className="text-muted-foreground">Whatever your industry, let's create a website that wins customers.</p>
           </div>
           <Button
             size="lg"
-            className="rounded-full px-8 h-12 shrink-0"
+            className="rounded-full px-8 h-12 shrink-0 group"
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             data-testid="btn-work-cta"
           >
-            Start a Project <ArrowRight className="ml-2 w-4 h-4" />
+            Start a Project <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
           </Button>
         </motion.div>
       </div>
