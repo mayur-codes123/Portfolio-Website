@@ -60,7 +60,7 @@ const Nav = () => {
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
             className="text-xl font-bold tracking-tight hover:opacity-70 transition-opacity"
-            data-testid="nav-logo"
+           
             whileHover={{ scale: 1.02 }}
           >
             Mayur Tak
@@ -72,7 +72,7 @@ const Nav = () => {
                 key={link.href}
                 onClick={() => scrollTo(link.href)}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                data-testid={`nav-link-${link.label.toLowerCase()}`}
+               
               >
                 {link.label}
               </button>
@@ -81,7 +81,7 @@ const Nav = () => {
               size="sm"
               className="rounded-full px-5"
               onClick={() => scrollTo("#contact")}
-              data-testid="nav-cta"
+             
             >
               Hire Me
             </Button>
@@ -90,7 +90,7 @@ const Nav = () => {
           <button
             className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
             onClick={() => setMenuOpen((v) => !v)}
-            data-testid="nav-mobile-toggle"
+           
           >
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -144,7 +144,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="text-sm md:text-base font-semibold tracking-widest text-muted-foreground uppercase mb-6"
-          data-testid="hero-subtitle"
+         
         >
           Freelance Web Designer & Developer
         </motion.h2>
@@ -154,7 +154,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.05]"
-          data-testid="hero-title"
+         
         >
           I build <span className="text-muted-foreground/60">business</span>{" "}
           websites that{" "}
@@ -166,7 +166,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
-          data-testid="hero-description"
+         
         >
           Hi, I'm{" "}
           <span className="text-foreground font-semibold">Mayur Tak</span>. I
@@ -184,7 +184,7 @@ const Hero = () => {
             size="lg"
             className="rounded-full px-8 h-14 text-base group"
             onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}
-            data-testid="btn-view-work"
+           
           >
             View My Work
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
@@ -194,7 +194,7 @@ const Hero = () => {
             variant="outline"
             className="rounded-full px-8 h-14 text-base hover:bg-foreground hover:text-background transition-colors duration-300"
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-            data-testid="btn-contact-me"
+           
           >
             Get in Touch
           </Button>
@@ -226,7 +226,7 @@ const About = () => {
         >
           <div>
             <span className="text-xs tracking-widest uppercase text-muted-foreground font-semibold mb-4 block">About</span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6" data-testid="about-title">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">
               The solo expert sharper than an agency.
             </h2>
             <div className="space-y-5 text-lg text-muted-foreground">
@@ -306,7 +306,7 @@ const Services = () => {
           className="mb-16"
         >
           <span className="text-xs tracking-widest uppercase text-muted-foreground font-semibold mb-4 block">Services</span>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" data-testid="services-title">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
             What I deliver
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl">
@@ -361,7 +361,7 @@ const Industries = () => {
           className="mb-16"
         >
           <span className="text-xs tracking-widest uppercase text-muted-foreground font-semibold mb-4 block">Industries</span>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" data-testid="industries-title">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
             Websites for every business
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl">
@@ -453,7 +453,7 @@ const Work = () => {
           className="mb-16 md:mb-20"
         >
           <span className="text-xs tracking-widest uppercase text-muted-foreground font-semibold mb-4 block">Work</span>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4" data-testid="work-title">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
             Selected Work
           </h2>
           <p className="text-xl text-muted-foreground max-w-xl">
@@ -467,7 +467,7 @@ const Work = () => {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           className="group mb-28"
-          data-testid="project-card-featured"
+         
         >
           <div className="overflow-hidden rounded-2xl border border-border/50 bg-muted/20 aspect-[16/9] relative mb-8">
             <motion.img
@@ -495,7 +495,7 @@ const Work = () => {
               className="inline-flex items-center shrink-0 text-sm font-semibold uppercase tracking-wider hover:text-muted-foreground transition-colors group/link"
               whileHover={{ x: 4 }}
               transition={{ duration: 0.2 }}
-              data-testid="link-project-featured"
+             
             >
               View Live Site{" "}
               <ExternalLink className="ml-2 w-4 h-4 group-hover/link:rotate-6 transition-transform duration-200" />
@@ -525,7 +525,7 @@ const Work = () => {
               transition={{ duration: 0.5, delay: i * 0.08 }}
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
               className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/40 transition-colors duration-300"
-              data-testid={`example-card-${i}`}
+             
             >
               <div className="aspect-[4/3] overflow-hidden bg-muted/20">
                 <motion.img
@@ -561,7 +561,7 @@ const Work = () => {
             size="lg"
             className="rounded-full px-8 h-12 shrink-0 group"
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-            data-testid="btn-work-cta"
+           
           >
             Start a Project <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
           </Button>
@@ -637,7 +637,7 @@ const Contact = () => {
                 transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
                 whileHover={{ x: 6, transition: { duration: 0.2 } }}
                 className="flex items-center text-base md:text-lg hover:text-muted-foreground transition-colors group"
-                data-testid={`contact-link-${i}`}
+               
               >
                 <div className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center mr-4 group-hover:border-primary group-hover:bg-primary/10 transition-all duration-300">
                   {item.icon}
@@ -663,7 +663,7 @@ const Contact = () => {
                   type="text"
                   className="w-full bg-transparent border-b border-border py-3 focus:outline-none focus:border-primary transition-colors duration-200 placeholder:text-muted-foreground/50"
                   placeholder="John Doe"
-                  data-testid="input-contact-name"
+                 
                 />
               </div>
               <div className="space-y-2">
@@ -672,7 +672,7 @@ const Contact = () => {
                   type="email"
                   className="w-full bg-transparent border-b border-border py-3 focus:outline-none focus:border-primary transition-colors duration-200 placeholder:text-muted-foreground/50"
                   placeholder="john@example.com"
-                  data-testid="input-contact-email"
+                 
                 />
               </div>
             </div>
@@ -681,13 +681,13 @@ const Contact = () => {
               <textarea
                 className="w-full bg-transparent border-b border-border py-3 focus:outline-none focus:border-primary transition-colors duration-200 min-h-[100px] resize-none placeholder:text-muted-foreground/50"
                 placeholder="Tell me about your business and what you need..."
-                data-testid="input-contact-message"
+               
               />
             </div>
             <Button
               size="lg"
               className="w-full rounded-full h-14 text-base mt-4 hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
-              data-testid="btn-submit-contact"
+             
             >
               Send Message
             </Button>
