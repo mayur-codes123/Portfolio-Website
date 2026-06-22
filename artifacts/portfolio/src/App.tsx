@@ -413,37 +413,6 @@ const Industries = () => {
 };
 
 const Work = () => {
-  const projects = [
-    {
-      title: "Sartaneshwar Textiles",
-      category: "Textile Manufacturing",
-      image: "/projects/textile.png",
-      url: "https://sartaneshwar-textiles.vercel.app/",
-      featured: true,
-    },
-    {
-      title: "Lumina Fine Dining",
-      category: "Restaurant",
-      image: "/projects/restaurant.png",
-      url: "#",
-      featured: false,
-    },
-    {
-      title: "Aura Estates",
-      category: "Luxury Real Estate",
-      image: "/projects/real-estate.png",
-      url: "#",
-      featured: false,
-    },
-    {
-      title: "Elle Salon",
-      category: "Beauty & Wellness",
-      image: "/projects/salon.png",
-      url: "#",
-      featured: false,
-    },
-  ];
-
   return (
     <section id="work" className="py-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto">
@@ -463,71 +432,69 @@ const Work = () => {
           </p>
         </motion.div>
 
-        <div className="space-y-20">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 48 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-              className={`group relative grid grid-cols-1 ${
-                project.featured ? "lg:grid-cols-12" : "md:grid-cols-2"
-              } gap-8 lg:gap-12 items-center`}
-              data-testid={`project-card-${index}`}
-            >
-              <div
-                className={`${project.featured ? "lg:col-span-8" : ""} order-2 ${
-                  project.featured ? "lg:order-1" : ""
-                }`}
-              >
-                <div className="overflow-hidden rounded-2xl border border-border/50 bg-muted/20 aspect-[16/9] relative">
-                  <motion.div
-                    className="absolute inset-0 bg-primary/5 z-10"
-                    whileHover={{ opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                  />
-                  <motion.img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                    whileHover={{ scale: 1.04 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                </div>
-              </div>
+        <motion.div
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="group"
+          data-testid="project-card-0"
+        >
+          <div className="overflow-hidden rounded-2xl border border-border/50 bg-muted/20 aspect-[16/9] relative mb-8">
+            <motion.img
+              src="/projects/textile.png"
+              alt="Sartaneshwar Textiles"
+              className="w-full h-full object-cover"
+              loading="lazy"
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+          </div>
 
-              <div
-                className={`${project.featured ? "lg:col-span-4" : ""} order-1 ${
-                  project.featured ? "lg:order-2" : ""
-                }`}
-              >
-                {project.featured && (
-                  <span className="inline-block px-3 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full mb-4 tracking-wide">
-                    Featured Project
-                  </span>
-                )}
-                <h3 className="text-2xl md:text-3xl font-bold mb-2">{project.title}</h3>
-                <p className="text-muted-foreground mb-6">{project.category}</p>
-                {project.url !== "#" && (
-                  <motion.a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-sm font-semibold uppercase tracking-wider hover:text-muted-foreground transition-colors group/link"
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.2 }}
-                    data-testid={`link-project-${index}`}
-                  >
-                    View Live Site{" "}
-                    <ExternalLink className="ml-2 w-4 h-4 group-hover/link:rotate-6 transition-transform duration-200" />
-                  </motion.a>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <span className="inline-block px-3 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full mb-4 tracking-wide">
+                Featured Project
+              </span>
+              <h3 className="text-2xl md:text-4xl font-bold mb-2">Sartaneshwar Textiles</h3>
+              <p className="text-muted-foreground">Textile Manufacturing — Full business website</p>
+            </div>
+            <motion.a
+              href="https://sartaneshwar-textiles.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center shrink-0 text-sm font-semibold uppercase tracking-wider hover:text-muted-foreground transition-colors group/link"
+              whileHover={{ x: 4 }}
+              transition={{ duration: 0.2 }}
+              data-testid="link-project-0"
+            >
+              View Live Site{" "}
+              <ExternalLink className="ml-2 w-4 h-4 group-hover/link:rotate-6 transition-transform duration-200" />
+            </motion.a>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-20 bg-card border border-border/50 rounded-2xl px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6"
+        >
+          <div>
+            <h3 className="text-xl font-bold mb-1">Currently taking on new projects</h3>
+            <p className="text-muted-foreground">Let's build your business website from the ground up.</p>
+          </div>
+          <Button
+            size="lg"
+            className="rounded-full px-8 h-12 shrink-0"
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+            data-testid="btn-work-cta"
+          >
+            Start a Project <ArrowRight className="ml-2 w-4 h-4" />
+          </Button>
+        </motion.div>
       </div>
     </section>
   );
