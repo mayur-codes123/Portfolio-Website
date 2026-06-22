@@ -434,7 +434,7 @@ const examples = [
   {
     title: "Steel & Industrial Business",
     category: "Manufacturing",
-    image: "/projects/textile.png",
+    image: "/projects/steel.png",
     desc: "Product catalogues, inquiry forms, and authority-building design for heavy industry.",
   },
 ];

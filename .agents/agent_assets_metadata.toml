@@ -24,3 +24,9 @@ id = "XdDnL_S2DRo7RhsUtwdpJ"
 uri = "file://artifacts/portfolio/public/projects/textile.png"
 type = "image"
 title = "Textile Manufacturing Website Mockup"
+
+[[generated]]
+id = "GwtBc3pJV-cmQLig9OmRL"
+uri = "file://attached_assets/generated_images/professional_steel_manufacturing_and_c084.png"
+type = "image"
+title = "generated_image"
