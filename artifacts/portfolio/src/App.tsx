@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, 
   Code2, 
@@ -9,42 +9,205 @@ import {
   Mail, 
   Phone, 
   ExternalLink,
-  ChevronRight
+  Menu,
+  X,
+  Building2,
+  Utensils,
+  Factory,
+  Home,
+  ShoppingBag,
+  Scissors,
+  Briefcase,
+  Hotel
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const Hero = () => {
+const navLinks = [
+  { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Industries", href: "#industries" },
+  { label: "Work", href: "#work" },
+  { label: "Contact", href: "#contact" },
+];
+
+const Nav = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollTo = (href: string) => {
+    setMenuOpen(false);
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <section className="min-h-[100dvh] flex flex-col justify-center relative px-6 md:px-12 lg:px-24 pt-20">
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 opacity-20 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/20 blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-primary/20 blur-[120px]" />
-      </div>
-      
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-4xl"
+    <>
+      <motion.header
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled ? "bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10" : "bg-transparent"
+        }`}
       >
-        <h2 className="text-sm md:text-base font-semibold tracking-wider text-muted-foreground uppercase mb-6" data-testid="hero-subtitle">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 h-16 flex items-center justify-between">
+          <motion.a
+            href="#"
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            className="text-xl font-bold tracking-tight hover:opacity-70 transition-opacity"
+            data-testid="nav-logo"
+            whileHover={{ scale: 1.02 }}
+          >
+            Mayur Tak
+          </motion.a>
+
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <button
+                key={link.href}
+                onClick={() => scrollTo(link.href)}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                data-testid={`nav-link-${link.label.toLowerCase()}`}
+              >
+                {link.label}
+              </button>
+            ))}
+            <Button
+              size="sm"
+              className="rounded-full px-5"
+              onClick={() => scrollTo("#contact")}
+              data-testid="nav-cta"
+            >
+              Hire Me
+            </Button>
+          </nav>
+
+          <button
+            className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => setMenuOpen((v) => !v)}
+            data-testid="nav-mobile-toggle"
+          >
+            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </motion.header>
+
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-16 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border px-6 py-6 flex flex-col gap-4 md:hidden"
+          >
+            {navLinks.map((link) => (
+              <button
+                key={link.href}
+                onClick={() => scrollTo(link.href)}
+                className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors text-left"
+              >
+                {link.label}
+              </button>
+            ))}
+            <Button className="rounded-full mt-2" onClick={() => scrollTo("#contact")}>Hire Me</Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+const Hero = () => {
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 80]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+
+  return (
+    <section className="min-h-[100dvh] flex flex-col justify-center relative px-6 md:px-12 lg:px-24 pt-20 overflow-hidden">
+      <motion.div
+        style={{ y, opacity }}
+        className="absolute inset-0 -z-10 pointer-events-none"
+      >
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[130px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-primary/8 blur-[130px]" />
+      </motion.div>
+
+      <div className="max-w-5xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-sm md:text-base font-semibold tracking-widest text-muted-foreground uppercase mb-6"
+          data-testid="hero-subtitle"
+        >
           Freelance Web Designer & Developer
-        </h2>
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1]" data-testid="hero-title">
-          I build <span className="text-muted-foreground">business</span> websites that <span className="italic font-serif">convert</span>.
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed" data-testid="hero-description">
-          Hi, I'm Mayur Tak. I craft polished, high-performance digital experiences that help businesses stand out and grow. Design-forward, technically sharp.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button size="lg" className="rounded-full px-8 h-14 text-base group" onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })} data-testid="btn-view-work">
+        </motion.h2>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.05]"
+          data-testid="hero-title"
+        >
+          I build <span className="text-muted-foreground/60">business</span>{" "}
+          websites that{" "}
+          <span className="italic font-serif text-foreground">convert</span>.
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
+          data-testid="hero-description"
+        >
+          Hi, I'm{" "}
+          <span className="text-foreground font-semibold">Mayur Tak</span>. I
+          craft polished, high-performance digital experiences that help
+          businesses stand out and grow. Design-forward, technically sharp.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row gap-4"
+        >
+          <Button
+            size="lg"
+            className="rounded-full px-8 h-14 text-base group"
+            onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}
+            data-testid="btn-view-work"
+          >
             View My Work
-            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
           </Button>
-          <Button size="lg" variant="outline" className="rounded-full px-8 h-14 text-base" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} data-testid="btn-contact-me">
+          <Button
+            size="lg"
+            variant="outline"
+            className="rounded-full px-8 h-14 text-base hover:bg-foreground hover:text-background transition-colors duration-300"
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+            data-testid="btn-contact-me"
+          >
             Get in Touch
           </Button>
-        </div>
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.2 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      >
+        <div className="w-px h-12 bg-gradient-to-b from-transparent to-muted-foreground/40" />
       </motion.div>
     </section>
   );
@@ -52,50 +215,55 @@ const Hero = () => {
 
 const About = () => {
   return (
-    <section id="about" className="py-24 px-6 md:px-12 lg:px-24 bg-muted/30">
+    <section id="about" className="py-24 px-6 md:px-12 lg:px-24 bg-muted/20">
       <div className="max-w-7xl mx-auto">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
         >
           <div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6" data-testid="about-title">The solo expert sharper than an agency.</h2>
-            <div className="space-y-6 text-lg text-muted-foreground">
+            <span className="text-xs tracking-widest uppercase text-muted-foreground font-semibold mb-4 block">About</span>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6" data-testid="about-title">
+              The solo expert sharper than an agency.
+            </h2>
+            <div className="space-y-5 text-lg text-muted-foreground">
               <p>
-                When you hire an agency, you pay for overhead. When you work with me, you get direct access to the person building your business's most important marketing asset.
+                When you hire an agency, you pay for overhead. When you work
+                with me, you get direct access to the person building your
+                business's most important marketing asset.
               </p>
               <p>
-                I specialize in creating websites that don't just look stunning, but are architected to turn visitors into customers. Clean code, sharp aesthetics, and an obsessive attention to detail.
+                I specialize in creating websites that don't just look stunning,
+                but are architected to turn visitors into customers. Clean code,
+                sharp aesthetics, and an obsessive attention to detail.
               </p>
-              <p>
-                Based in India, working with ambitious businesses worldwide.
-              </p>
+              <p>Based in India. Working with ambitious businesses worldwide.</p>
             </div>
           </div>
+
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <div className="bg-card p-6 rounded-2xl border border-border/50 h-48 flex flex-col justify-end">
-                <Layout className="w-8 h-8 mb-4 text-primary" />
-                <h3 className="font-semibold">UX/UI Design</h3>
-              </div>
-              <div className="bg-card p-6 rounded-2xl border border-border/50 h-48 flex flex-col justify-end">
-                <Code2 className="w-8 h-8 mb-4 text-primary" />
-                <h3 className="font-semibold">Web Development</h3>
-              </div>
-            </div>
-            <div className="space-y-4 mt-8">
-              <div className="bg-card p-6 rounded-2xl border border-border/50 h-48 flex flex-col justify-end">
-                <Smartphone className="w-8 h-8 mb-4 text-primary" />
-                <h3 className="font-semibold">Responsive</h3>
-              </div>
-              <div className="bg-card p-6 rounded-2xl border border-border/50 h-48 flex flex-col justify-end">
-                <Zap className="w-8 h-8 mb-4 text-primary" />
-                <h3 className="font-semibold">Performance</h3>
-              </div>
-            </div>
+            {[
+              { icon: <Layout className="w-7 h-7 text-primary" />, label: "UX/UI Design" },
+              { icon: <Code2 className="w-7 h-7 text-primary" />, label: "Web Development" },
+              { icon: <Smartphone className="w-7 h-7 text-primary" />, label: "Responsive" },
+              { icon: <Zap className="w-7 h-7 text-primary" />, label: "Performance" },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className={`bg-card p-6 rounded-2xl border border-border/50 h-44 flex flex-col justify-end hover:border-primary/40 transition-colors duration-300 ${i % 2 === 1 ? "mt-8" : ""}`}
+              >
+                {item.icon}
+                <h3 className="font-semibold mt-4">{item.label}</h3>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </div>
@@ -108,50 +276,137 @@ const Services = () => {
     {
       title: "Business Websites",
       description: "Custom-designed websites that act as your 24/7 sales representative. Architected for conversion, speed, and establishing industry authority.",
-      icon: <Layout className="w-6 h-6 mb-4 text-primary" />
+      icon: <Layout className="w-6 h-6 text-primary" />,
     },
     {
-      title: "E-Commerce",
+      title: "E-Commerce Stores",
       description: "High-performance online stores optimized for user experience and seamless checkout flows. Turn browsing into buying.",
-      icon: <Zap className="w-6 h-6 mb-4 text-primary" />
+      icon: <Zap className="w-6 h-6 text-primary" />,
     },
     {
       title: "Landing Pages",
       description: "Laser-focused landing pages designed for specific marketing campaigns. Built to capture leads and maximize ROI.",
-      icon: <Smartphone className="w-6 h-6 mb-4 text-primary" />
+      icon: <Smartphone className="w-6 h-6 text-primary" />,
     },
     {
       title: "Redesign & Optimization",
       description: "Audit and overhaul of your existing digital presence. Modernizing outdated designs and fixing performance bottlenecks.",
-      icon: <Code2 className="w-6 h-6 mb-4 text-primary" />
-    }
+      icon: <Code2 className="w-6 h-6 text-primary" />,
+    },
   ];
 
   return (
     <section id="services" className="py-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6" data-testid="services-title">Services</h2>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <span className="text-xs tracking-widest uppercase text-muted-foreground font-semibold mb-4 block">Services</span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" data-testid="services-title">
+            What I deliver
+          </h2>
           <p className="text-xl text-muted-foreground max-w-2xl">
             Everything you need to establish a dominant digital presence.
           </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {services.map((service, index) => (
-            <motion.div 
+            <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-card p-8 rounded-2xl border border-border/50 hover:border-primary/50 transition-colors"
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55, delay: index * 0.08 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="bg-card p-8 rounded-2xl border border-border/50 hover:border-primary/40 transition-colors duration-300 group"
             >
-              {service.icon}
+              <div className="mb-5 w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                {service.icon}
+              </div>
               <h3 className="text-xl font-bold mb-3">{service.title}</h3>
               <p className="text-muted-foreground leading-relaxed">{service.description}</p>
             </motion.div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+};
+
+const industries = [
+  { icon: <Home className="w-5 h-5" />, label: "Real Estate", desc: "Property listings, agent portfolios, and luxury real estate showcase sites." },
+  { icon: <Utensils className="w-5 h-5" />, label: "Fine Dining & Restaurants", desc: "Elegant menus, reservation flows, and brand storytelling for restaurants." },
+  { icon: <Factory className="w-5 h-5" />, label: "Steel & Manufacturing", desc: "Industrial business sites with product catalogues and inquiry systems." },
+  { icon: <Building2 className="w-5 h-5" />, label: "Textile & Apparel", desc: "B2B and B2C textile businesses with product galleries and contact forms." },
+  { icon: <Hotel className="w-5 h-5" />, label: "Hotels & Hospitality", desc: "Booking-ready hotel sites that showcase amenities and drive reservations." },
+  { icon: <ShoppingBag className="w-5 h-5" />, label: "Retail & E-Commerce", desc: "Conversion-optimized online stores for physical and digital products." },
+  { icon: <Scissors className="w-5 h-5" />, label: "Salons & Wellness", desc: "Appointment-driven sites for salons, spas, and wellness brands." },
+  { icon: <Briefcase className="w-5 h-5" />, label: "Consultants & Agencies", desc: "Professional service sites that build authority and generate leads." },
+];
+
+const Industries = () => {
+  return (
+    <section id="industries" className="py-24 px-6 md:px-12 lg:px-24 bg-muted/20">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <span className="text-xs tracking-widest uppercase text-muted-foreground font-semibold mb-4 block">Industries</span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" data-testid="industries-title">
+            Websites for every business
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl">
+            Whatever your industry, I know how to translate your business into a website that wins customers.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {industries.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: i * 0.06 }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              className="bg-card border border-border/50 rounded-2xl p-6 hover:border-primary/40 hover:bg-card/80 transition-all duration-300 group cursor-default"
+            >
+              <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                {item.icon}
+              </div>
+              <h3 className="font-semibold mb-2 text-sm">{item.label}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-10 text-center"
+        >
+          <p className="text-muted-foreground text-base">
+            Don't see your industry?{" "}
+            <button
+              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+              className="text-foreground font-semibold underline underline-offset-4 hover:text-muted-foreground transition-colors"
+            >
+              Let's talk
+            </button>
+            — I build websites for any type of business.
+          </p>
+        </motion.div>
       </div>
     </section>
   );
@@ -186,58 +441,88 @@ const Work = () => {
       image: "/projects/salon.png",
       url: "#",
       featured: false,
-    }
+    },
   ];
 
   return (
     <section id="work" className="py-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4" data-testid="work-title">Selected Work</h2>
-            <p className="text-xl text-muted-foreground max-w-xl">Digital experiences crafted for impact and conversion.</p>
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="mb-16 md:mb-20"
+        >
+          <span className="text-xs tracking-widest uppercase text-muted-foreground font-semibold mb-4 block">Work</span>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4" data-testid="work-title">
+            Selected Work
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-xl">
+            Digital experiences crafted for impact and conversion.
+          </p>
+        </motion.div>
 
-        <div className="space-y-24">
+        <div className="space-y-20">
           {projects.map((project, index) => (
-            <motion.div 
+            <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 48 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.7 }}
-              className={`group relative grid grid-cols-1 ${project.featured ? 'lg:grid-cols-12' : 'md:grid-cols-2'} gap-8 lg:gap-12 items-center`}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+              className={`group relative grid grid-cols-1 ${
+                project.featured ? "lg:grid-cols-12" : "md:grid-cols-2"
+              } gap-8 lg:gap-12 items-center`}
               data-testid={`project-card-${index}`}
             >
-              <div className={`${project.featured ? 'lg:col-span-8' : ''} order-2 ${project.featured ? 'lg:order-1' : ''}`}>
-                <div className="overflow-hidden rounded-2xl border border-border/50 bg-muted/20 aspect-[16/9] md:aspect-[4/3] lg:aspect-[16/9] relative">
-                  <div className="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors z-10 duration-500" />
-                  <img 
-                    src={project.image} 
+              <div
+                className={`${project.featured ? "lg:col-span-8" : ""} order-2 ${
+                  project.featured ? "lg:order-1" : ""
+                }`}
+              >
+                <div className="overflow-hidden rounded-2xl border border-border/50 bg-muted/20 aspect-[16/9] relative">
+                  <motion.div
+                    className="absolute inset-0 bg-primary/5 z-10"
+                    whileHover={{ opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                  />
+                  <motion.img
+                    src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover"
                     loading="lazy"
+                    whileHover={{ scale: 1.04 }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   />
                 </div>
               </div>
-              <div className={`${project.featured ? 'lg:col-span-4' : ''} order-1 ${project.featured ? 'lg:order-2' : ''}`}>
+
+              <div
+                className={`${project.featured ? "lg:col-span-4" : ""} order-1 ${
+                  project.featured ? "lg:order-2" : ""
+                }`}
+              >
                 {project.featured && (
-                  <span className="inline-block px-3 py-1 text-xs font-medium bg-primary text-primary-foreground rounded-full mb-4">
+                  <span className="inline-block px-3 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full mb-4 tracking-wide">
                     Featured Project
                   </span>
                 )}
                 <h3 className="text-2xl md:text-3xl font-bold mb-2">{project.title}</h3>
                 <p className="text-muted-foreground mb-6">{project.category}</p>
                 {project.url !== "#" && (
-                  <a 
-                    href={project.url} 
-                    target="_blank" 
+                  <motion.a
+                    href={project.url}
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-sm font-semibold uppercase tracking-wider hover:text-muted-foreground transition-colors"
+                    className="inline-flex items-center text-sm font-semibold uppercase tracking-wider hover:text-muted-foreground transition-colors group/link"
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
+                    data-testid={`link-project-${index}`}
                   >
-                    View Live Site <ExternalLink className="ml-2 w-4 h-4" />
-                  </a>
+                    View Live Site{" "}
+                    <ExternalLink className="ml-2 w-4 h-4 group-hover/link:rotate-6 transition-transform duration-200" />
+                  </motion.a>
                 )}
               </div>
             </motion.div>
@@ -249,71 +534,31 @@ const Work = () => {
 };
 
 const Skills = () => {
-  const skills = ["HTML5", "CSS3", "JavaScript (ES6+)", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "Figma", "UI/UX Design", "Responsive Design"];
-  
-  return (
-    <section className="py-24 px-6 md:px-12 lg:px-24 bg-primary text-primary-foreground overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-sm font-semibold tracking-wider uppercase mb-12 text-primary-foreground/60">Core Technologies</h2>
-        <div className="flex flex-wrap gap-4 md:gap-6">
-          {skills.map((skill, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tight text-primary-foreground/40 hover:text-primary-foreground transition-colors cursor-default"
-            >
-              {skill}
-              {index < skills.length - 1 && <span className="mx-4 md:mx-6 text-primary-foreground/20">/</span>}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Testimonials = () => {
-  const testimonials = [
-    {
-      quote: "Mayur completely transformed our digital presence. The new website is not just beautiful, it's driving more leads than we ever thought possible.",
-      author: "Rahul Sharma",
-      role: "Director, Sartaneshwar Textiles"
-    },
-    {
-      quote: "Working with Mayur was a breeze. He understood our vision immediately and delivered a product that exceeded our expectations in every way.",
-      author: "Priya Desai",
-      role: "Founder, Elle Salon"
-    },
-    {
-      quote: "The technical execution is flawless, but it's his eye for design that really sets him apart. Highly recommended for any serious business.",
-      author: "Amit Patel",
-      role: "CEO, Aura Estates"
-    }
+  const skills = [
+    "HTML5", "CSS3", "JavaScript", "React", "TypeScript",
+    "Tailwind CSS", "Framer Motion", "Figma", "UI/UX Design", "Responsive Design",
   ];
 
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-24">
+    <section className="py-24 px-6 md:px-12 lg:px-24 bg-foreground text-background overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-16 text-center">Client Feedback</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((t, index) => (
-            <motion.div 
+        <h2 className="text-xs font-semibold tracking-widest uppercase mb-12 text-background/50">Core Technologies</h2>
+        <div className="flex flex-wrap gap-4 md:gap-6">
+          {skills.map((skill, index) => (
+            <motion.span
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-card p-8 rounded-2xl border border-border/50 flex flex-col justify-between"
+              transition={{ duration: 0.4, delay: index * 0.04 }}
+              whileHover={{ color: "hsl(var(--background))", opacity: 1, transition: { duration: 0.15 } }}
+              className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tight text-background/30 cursor-default transition-opacity"
             >
-              <p className="text-lg italic text-muted-foreground mb-8">"{t.quote}"</p>
-              <div>
-                <p className="font-bold">{t.author}</p>
-                <p className="text-sm text-muted-foreground">{t.role}</p>
-              </div>
-            </motion.div>
+              {skill}
+              {index < skills.length - 1 && (
+                <span className="mx-4 md:mx-6 text-background/15">/</span>
+              )}
+            </motion.span>
           ))}
         </div>
       </div>
@@ -323,57 +568,93 @@ const Testimonials = () => {
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-24 px-6 md:px-12 lg:px-24 bg-muted/30">
+    <section id="contact" className="py-24 px-6 md:px-12 lg:px-24 bg-muted/20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
-        <div>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">Let's build something extraordinary.</h2>
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className="text-xs tracking-widest uppercase text-muted-foreground font-semibold mb-4 block">Contact</span>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+            Let's build something extraordinary.
+          </h2>
           <p className="text-xl text-muted-foreground mb-12 max-w-md">
             Ready to upgrade your business website? Reach out and let's discuss your project.
           </p>
-          
-          <div className="space-y-6">
-            <a href="mailto:takmayur201@gmail.com" className="flex items-center text-lg hover:text-muted-foreground transition-colors group">
-              <div className="w-12 h-12 rounded-full bg-card border border-border flex items-center justify-center mr-4 group-hover:border-primary transition-colors">
-                <Mail className="w-5 h-5" />
-              </div>
-              takmayur201@gmail.com
-            </a>
-            <a href="mailto:mayurtak.codes@gmail.com" className="flex items-center text-lg hover:text-muted-foreground transition-colors group">
-              <div className="w-12 h-12 rounded-full bg-card border border-border flex items-center justify-center mr-4 group-hover:border-primary transition-colors">
-                <Mail className="w-5 h-5" />
-              </div>
-              mayurtak.codes@gmail.com
-            </a>
-            <a href="tel:+919082090433" className="flex items-center text-lg hover:text-muted-foreground transition-colors group">
-              <div className="w-12 h-12 rounded-full bg-card border border-border flex items-center justify-center mr-4 group-hover:border-primary transition-colors">
-                <Phone className="w-5 h-5" />
-              </div>
-              +91 9082090433
-            </a>
+
+          <div className="space-y-5">
+            {[
+              { href: "mailto:takmayur201@gmail.com", icon: <Mail className="w-5 h-5" />, label: "takmayur201@gmail.com" },
+              { href: "mailto:mayurtak.codes@gmail.com", icon: <Mail className="w-5 h-5" />, label: "mayurtak.codes@gmail.com" },
+              { href: "tel:+919082090433", icon: <Phone className="w-5 h-5" />, label: "+91 9082090433" },
+            ].map((item, i) => (
+              <motion.a
+                key={i}
+                href={item.href}
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
+                whileHover={{ x: 6, transition: { duration: 0.2 } }}
+                className="flex items-center text-base md:text-lg hover:text-muted-foreground transition-colors group"
+                data-testid={`contact-link-${i}`}
+              >
+                <div className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center mr-4 group-hover:border-primary group-hover:bg-primary/10 transition-all duration-300">
+                  {item.icon}
+                </div>
+                {item.label}
+              </motion.a>
+            ))}
           </div>
-        </div>
-        
-        <div className="bg-card p-8 rounded-3xl border border-border/50">
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="bg-card p-8 rounded-3xl border border-border/50"
+        >
           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Name</label>
-                <input type="text" className="w-full bg-transparent border-b border-border py-3 focus:outline-none focus:border-primary transition-colors" placeholder="John Doe" />
+                <input
+                  type="text"
+                  className="w-full bg-transparent border-b border-border py-3 focus:outline-none focus:border-primary transition-colors duration-200 placeholder:text-muted-foreground/50"
+                  placeholder="John Doe"
+                  data-testid="input-contact-name"
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Email</label>
-                <input type="email" className="w-full bg-transparent border-b border-border py-3 focus:outline-none focus:border-primary transition-colors" placeholder="john@example.com" />
+                <input
+                  type="email"
+                  className="w-full bg-transparent border-b border-border py-3 focus:outline-none focus:border-primary transition-colors duration-200 placeholder:text-muted-foreground/50"
+                  placeholder="john@example.com"
+                  data-testid="input-contact-email"
+                />
               </div>
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Project Details</label>
-              <textarea className="w-full bg-transparent border-b border-border py-3 focus:outline-none focus:border-primary transition-colors min-h-[100px] resize-none" placeholder="Tell me about your business and what you need..."></textarea>
+              <textarea
+                className="w-full bg-transparent border-b border-border py-3 focus:outline-none focus:border-primary transition-colors duration-200 min-h-[100px] resize-none placeholder:text-muted-foreground/50"
+                placeholder="Tell me about your business and what you need..."
+                data-testid="input-contact-message"
+              />
             </div>
-            <Button size="lg" className="w-full rounded-full h-14 text-base mt-4" data-testid="btn-submit-contact">
+            <Button
+              size="lg"
+              className="w-full rounded-full h-14 text-base mt-4 hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
+              data-testid="btn-submit-contact"
+            >
               Send Message
             </Button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -384,10 +665,15 @@ const Footer = () => {
     <footer className="py-12 px-6 md:px-12 lg:px-24 border-t border-border">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         <p className="font-bold text-xl tracking-tight">Mayur Tak</p>
-        <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Mayur Tak. All rights reserved.</p>
-        <div className="flex items-center space-x-6 text-sm font-medium">
-          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-muted-foreground transition-colors">Back to Top</button>
-        </div>
+        <p className="text-sm text-muted-foreground">
+          © {new Date().getFullYear()} Mayur Tak. All rights reserved.
+        </p>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+        >
+          Back to Top
+        </button>
       </div>
     </footer>
   );
@@ -395,17 +681,18 @@ const Footer = () => {
 
 function App() {
   useEffect(() => {
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.add("dark");
   }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground">
+      <Nav />
       <Hero />
       <About />
       <Services />
+      <Industries />
       <Work />
       <Skills />
-      <Testimonials />
       <Contact />
       <Footer />
     </div>
