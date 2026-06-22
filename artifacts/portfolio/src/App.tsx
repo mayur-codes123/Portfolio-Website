@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, 
   Code2, 
@@ -146,68 +146,75 @@ const Nav = () => {
   );
 };
 
-const heroWords = ["I", "build", "business", "websites", "that", "convert."];
+const heroWords = [
+  { text: "I", cls: "" },
+  { text: "build", cls: "" },
+  { text: "business", cls: "text-muted-foreground/60" },
+  { text: "websites", cls: "" },
+  { text: "that", cls: "" },
+  { text: "convert.", cls: "italic font-serif" },
+];
 
 const Hero = () => {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 80]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const bgY = useTransform(scrollY, [0, 500], [0, 80]);
+  const bgOpacity = useTransform(scrollY, [0, 400], [1, 0]);
 
   return (
     <section className="min-h-[100dvh] flex flex-col justify-center relative px-6 md:px-12 lg:px-24 pt-20 overflow-hidden">
       <motion.div
-        style={{ y, opacity }}
+        style={{ y: bgY, opacity: bgOpacity }}
         className="absolute inset-0 -z-10 pointer-events-none"
       >
         <motion.div
-          initial={{ scale: 0.7, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.6, ease: "easeOut", delay: 0.3 }}
           className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[130px]"
         />
         <motion.div
-          initial={{ scale: 0.7, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.6, ease: "easeOut", delay: 0.6 }}
           className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-primary/8 blur-[130px]"
         />
       </motion.div>
 
       <div className="max-w-5xl">
-        <motion.h2
-          initial={{ opacity: 0, letterSpacing: "0.3em", y: 10 }}
-          animate={{ opacity: 1, letterSpacing: "0.15em", y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="text-sm md:text-base font-semibold tracking-widest text-muted-foreground uppercase mb-6"
-        >
-          Freelance Web Designer & Developer
-        </motion.h2>
+        <div style={{ overflow: "hidden" }}>
+          <motion.h2
+            initial={{ y: "110%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.65, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="text-sm md:text-base font-semibold tracking-widest text-muted-foreground uppercase mb-6"
+          >
+            Freelance Web Designer & Developer
+          </motion.h2>
+        </div>
 
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.05]">
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1]">
           {heroWords.map((word, i) => (
-            <motion.span
+            <span
               key={i}
-              initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{
-                duration: 0.65,
-                delay: 0.6 + i * 0.08,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className={`inline-block mr-[0.25em] ${
-                word === "business" ? "text-muted-foreground/60" :
-                word === "convert." ? "italic font-serif" : ""
-              }`}
+              style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", marginRight: "0.22em" }}
             >
-              {word}
-            </motion.span>
+              <motion.span
+                initial={{ y: "105%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.7, delay: 0.5 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: "inline-block" }}
+                className={word.cls}
+              >
+                {word.text}
+              </motion.span>
+            </span>
           ))}
         </h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.7, delay: 1.15, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
           className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
         >
           Hi, I'm{" "}
@@ -217,9 +224,9 @@ const Hero = () => {
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.3, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row gap-4"
         >
           <Button
@@ -244,12 +251,12 @@ const Hero = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.8 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        transition={{ duration: 0.8, delay: 1.7 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2"
       >
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [0, 7, 0] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 0.3 }}
           className="w-px h-12 bg-gradient-to-b from-transparent to-muted-foreground/40"
         />
       </motion.div>
@@ -488,7 +495,6 @@ const Work = () => {
     <section id="work" className="py-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto">
 
-        {/* Featured real project */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -547,7 +553,6 @@ const Work = () => {
           </div>
         </motion.div>
 
-        {/* Example capabilities */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
